@@ -1,0 +1,110 @@
+{
+  "testName": "Тест з WEB дизайну",
+  "questions": [
+    {
+      "question": "Вкажіть тег для блоку?",
+      "answers": [
+        {
+          "answer": "a",
+          "isCorrect": false
+        },
+        {
+          "answer": "div",
+          "isCorrect": true
+        },
+        {
+          "answer": "img",
+          "isCorrect": false
+        },
+        {
+          "answer": "p",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "question": "Вкажіть тег для гіперпосилання?",
+      "answers": [
+        {
+          "answer": "a",
+          "isCorrect": true
+        },
+        {
+          "answer": "div",
+          "isCorrect": false
+        },
+        {
+          "answer": "span",
+          "isCorrect": false
+        },
+        {
+          "answer": "p",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "question": "Яка команда використовується для відображення тексту на веб-сторінці?",
+      "answers": [
+        {
+          "answer": "&lt;div&gt;",
+          "isCorrect": false
+        },
+        {
+          "answer": "&lt;span&gt;",
+          "isCorrect": false
+        },
+        {
+          "answer": "&lt;p&gt;",
+          "isCorrect": true
+        },
+        {
+          "answer": "&lt;h1&gt;",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "question": "Яка мова використовується для стилізації веб-сторінок?",
+      "answers": [
+        {
+          "answer": "HTML",
+          "isCorrect": false
+        },
+        {
+          "answer": "CSS",
+          "isCorrect": true
+        },
+        {
+          "answer": "JavaScript",
+          "isCorrect": false
+        },
+        {
+          "answer": "PHP",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "question": "Як правильно підключити зовнішній CSS файл до HTML сторінки?",
+      "answers": [
+        {
+          "answer": "&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"&gt;",
+          "isCorrect": true
+        },
+        {
+          "answer": "&lt;style&gt;@import url('style.css');&lt;/style&gt;",
+          "isCorrect": false
+        },
+        {
+          "answer": "&lt;style src=\"style.css\"&gt;&lt;/style&gt;",
+          "isCorrect": false
+        },
+        {
+          "answer": "&lt;script src=\"style.css\"&gt;&lt;/script&gt;",
+          "isCorrect": false
+        }
+      ]
+    }
+  ]
+}

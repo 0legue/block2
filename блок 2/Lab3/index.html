@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vertical Moving Cube Game with Obstacles</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  
+  <canvas id="gameCanvas" width="480" height="320"></canvas>
+  <button id="startAgainButton" style="display:none;">Start Again</button>
+  <div id="highScores"></div>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let cubeY = canvas.height / 2;
+    let cubeWidth = 20;
+    let cubeHeight = 20;
+    let dy = -2;
+    let score = 0;
+    let lives = 3;
+    let obstacles = [];
+    let objects = [];
+    let gameLoop;
+    let highScores = [0, 0, 0];
+
+    function drawCube() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.rect(canvas.width / 2 - cubeWidth / 2, cubeY, cubeWidth, cubeHeight);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function drawObstacles() {
+      obstacles.forEach(function(obstacle, index) {
+        ctx.beginPath();
+        ctx.rect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+        ctx.fillStyle = "#FF0000";
+        ctx.fill();
+        ctx.closePath();
+      });
+    }
+
+    function drawObjects() {
+      objects.forEach(function(object, index) {
+        ctx.beginPath();
+        ctx.arc(object.x, object.y, object.radius, 0, Math.PI*2);
+        ctx.fillStyle = "#00FF00";
+        ctx.fill();
+        ctx.closePath();
+      });
+    }
+
+    function drawScore() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("Score: " + score, 8, 20);
+    }
+
+    function drawLives() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+    }
+
+    function drawHighScores() {
+      let highScoresText = "<h2>High Scores</h2>";
+      for (let i = 0; i < highScores.length; i++) {
+        highScoresText += "<p>" + (i + 1) + ". " + highScores[i] + "</p>";
+      }
+      document.getElementById('highScores').innerHTML = highScoresText;
+    }
+
+    function updateHighScores() {
+      highScores.push(score);
+      highScores.sort((a, b) => b - a);
+      highScores = highScores.slice(0, 3);
+    }
+
+    function collisionDetection() {
+      obstacles.forEach(function(obstacle, index) {
+        if(cubeY < obstacle.y + obstacle.height &&
+          cubeY + cubeHeight > obstacle.y &&
+          canvas.width / 2 > obstacle.x &&
+          canvas.width / 2 < obstacle.x + obstacle.width) {
+          lives--;
+          obstacles.splice(index, 1);
+        }
+      });
+
+      objects.forEach(function(object, index) {
+        let dx = canvas.width / 2 - object.x;
+        let dy = cubeY - object.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < cubeWidth + object.radius) {
+          score += 10;
+          objects.splice(index, 1);
+        }
+      });
+    }
+
+    function generateObstacle() {
+      let obstacleHeight = Math.floor(Math.random() * 20) + 10;
+      let obstacle = {
+        x: canvas.width,
+        y: Math.random() * (canvas.height - obstacleHeight),
+        width: 20,
+        height: obstacleHeight
+      };
+      obstacles.push(obstacle);
+    }
+
+    function generateObject() {
+      let objectRadius = 10;
+      let object = {
+        x: canvas.width,
+        y: Math.random() * canvas.height,
+        radius: objectRadius
+      };
+      objects.push(object);
+    }
+
+    function draw() {
+      drawCube();
+      drawObstacles();
+      drawObjects();
+      drawScore();
+      drawLives();
+      drawHighScores();
+
+      if(cubeY + dy < 0 || cubeY + dy > canvas.height - cubeHeight) {
+        dy = -dy;
+      }
+
+      cubeY += dy;
+
+      collisionDetection();
+
+      obstacles.forEach(function(obstacle, index) {
+        obstacle.x -= 2;
+        if(obstacle.x + obstacle.width < 0) {
+          obstacles.splice(index, 1);
+        }
+      });
+
+      objects.forEach(function(object, index) {
+        object.x -= 2;
+        if(object.x + object.radius < 0) {
+          objects.splice(index, 1);
+        }
+      });
+
+      if(obstacles.length < 5 && Math.random() < 0.05) {
+        generateObstacle();
+      }
+
+      if(objects.length < 5 && Math.random() < 0.03) {
+        generateObject();
+      }
+
+      if(lives <= 0) {
+        clearInterval(gameLoop);
+        updateHighScores();
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "#FF0000";
+        ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
+        document.getElementById('startAgainButton').style.display = "block";
+      }
+    }
+
+    function startGame() {
+      score = 0;
+      lives = 3;
+      obstacles = [];
+      objects = [];
+      gameLoop = setInterval(draw, 10);
+      document.getElementById('startAgainButton').style.display = "none";
+    }
+
+    let startButton = document.getElementById('startAgainButton');
+    startButton.addEventListener('click', startGame);
+
+    document.addEventListener("keydown", moveCube);
+
+    function moveCube(event) {
+      if(event.key === "ArrowUp") {
+        dy = -2;
+      } else if(event.key === "ArrowDown") {
+        dy = 2;
+      }
+    }
+
+    startGame();
+  </script>
+</body>
+</html>

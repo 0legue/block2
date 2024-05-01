@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опитування</title>
+</head>
+<body>
+    <form id="surveyForm">
+        <label for="faculty">На якому факультеті ви навчаєтесь:</label>
+        <select id="faculty" name="faculty">
+            <option value="engineering">Інженерія</option>
+            <option value="humanities">Гуманітарні науки</option>
+            <option value="science">Природничі науки</option>
+        </select><br>
+
+        <label>Виберіть потік на якому ви навчаєтесь:</label><br>
+        <input type="radio" id="stream1" name="stream" value="stream1">
+        <label for="stream1">Потік 1</label><br>
+        <input type="radio" id="stream2" name="stream" value="stream2">
+        <label for="stream2">Потік 2</label><br>
+
+        <label>Вкажіть групу:</label><br>
+        <input type="checkbox" id="groupA" name="group" value="groupA">
+        <label for="groupA">Група A</label><br>
+        <input type="checkbox" id="groupB" name="group" value="groupB">
+        <label for="groupB">Група B</label><br>
+
+        <label for="interviewTime">Виберіть зручний час для проходження співбесіди:</label><br>
+        <input type="datetime-local" id="interviewTime" name="interviewTime"><br>
+
+        <label for="averageScore">Вкажіть середній бал:</label><br>
+        <input type="number" id="averageScore" name="averageScore" min="0" max="100"><br>
+
+        <button type="submit">Відправити</button>
+    </form>
+
+    <script>
+        // Зберігаємо результати опитування у localStorage
+        document.getElementById('surveyForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const surveyData = {};
+            for (const [key, value] of formData.entries()) {
+                surveyData[key] = value;
+            }
+            const surveys = JSON.parse(localStorage.getItem('surveys')) || [];
+            surveys.push(surveyData);
+            localStorage.setItem('surveys', JSON.stringify(surveys));
+            alert('Дякуємо за участь у опитуванні!');
+            this.reset();
+        });
+
+        // Приклади фільтрів за допомогою JavaScript
+        const surveys = JSON.parse(localStorage.getItem('surveys')) || [];
+
+        // Вивести на сторінку учасників опитування лише з одного факультету
+        const engineeringStudents = surveys.filter(survey => survey.faculty === 'engineering');
+        console.log('Учасники з факультету Інженерії:', engineeringStudents);
+
+        // Вивести учасників, які можуть прийти на співбесіду в певний день і час
+        const specificInterviewTime = '2024-04-04T12:00'; // Припустимо, це конкретний день і час
+        const availableParticipants = surveys.filter(survey => new Date(survey.interviewTime) > new Date(specificInterviewTime));
+        console.log('Учасники, які можуть прийти на співбесіду:', availableParticipants);
+
+        // Вивести учасників з середнім балом від 3 до 4
+        const filteredByScore = surveys.filter(survey => survey.averageScore >= 3 && survey.averageScore <= 4);
+        console.log('Учасники з середнім балом від 3 до 4:', filteredByScore);
+    </script>
+</body>
+</html>

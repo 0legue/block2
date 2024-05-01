@@ -1,0 +1,32 @@
+/* styles.css */
+#test-container {
+    margin-bottom: 20px;
+  }
+  
+  .question {
+    margin-bottom: 20px;
+  }
+  
+  ul {
+    list-style-type: none;
+  }
+  
+  li {
+    margin-bottom: 5px;
+  }
+  
+  #submit-btn {
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  #result-container {
+    font-weight: bold;
+  }
+  .correct {
+    color: green;
+  }
+  
+  .incorrect {
+    color: red;
+  }
